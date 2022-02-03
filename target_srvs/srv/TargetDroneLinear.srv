@@ -1,0 +1,9 @@
+#request variables
+int64 velocity
+int64 acceleration
+int64 x_direction
+int64 y_direction
+int64 z_direction
+---
+#return variables
+bool success

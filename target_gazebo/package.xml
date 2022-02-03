@@ -1,0 +1,26 @@
+<package format="2">
+  <name>target_gazebo</name>
+  <version>2.2.3</version>
+  <description>The target_gazebo package</description>
+
+  <maintainer email="jonathan.becker@ethz-asl.ch">Jonatha Becker</maintainer>
+  
+  <author>Jonathan Becker</author>
+
+  <license>ASL 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- Dependencies needed to compile this package. -->
+  <depend>cmake_modules</depend>
+  <depend>gazebo</depend>
+  <depend>gazebo_plugins</depend>
+  <depend>gazebo_ros</depend>
+  <depend>rotors_gazebo_plugins</depend>
+  <depend>geometry_msgs</depend>
+  <depend>protobuf-dev</depend>
+  <depend>roscpp</depend>
+  <depend>mav_msgs</depend>
+  <depend>tf</depend>
+
+</package>

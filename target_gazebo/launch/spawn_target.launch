@@ -1,0 +1,65 @@
+<launch>
+    <!-- The world needs to have a ros_interface_plugin -->
+    <arg name="world_name" default="basic"/>
+
+    <!-- gazebo configs -->
+    <arg name="start_gazebo" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="false"/>
+    <arg name="paused" default="false"/>
+    <arg name="respawn_gazebo" default="false"/>
+    <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
+    <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
+
+    <!-- Gazebo sim, start an empty world-->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" if="$(arg start_gazebo)">
+        <arg name="world_name" value="$(find rotors_gazebo)/worlds/$(arg world_name).world" />
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
+    </include>
+
+    <group ns="target_drone">
+      <!-- gazebo model, spawn target drone-->
+      <arg name="mav_name" value="target_drone"/>
+      <arg name="namespace" value="$(arg mav_name)"/>
+      <arg name="model" value="$(find target_gazebo)/urdf/target_drone.xacro" />
+      <arg name="tf_prefix" value="$(optenv ROS_NAMESPACE)"/>
+      <arg name="x" value="10"/>
+      <arg name="y" value="0"/>
+      <arg name="z" value="10"/>
+      <arg name="enable_logging" value="false"/>
+      <arg name="enable_ground_truth" value="true"/>
+      <arg name="log_file" value="$(arg mav_name)"/>
+      <arg name="wait_to_record_bag" value="false"/>
+      <arg name="enable_mavlink_interface" value="false"/>
+
+      <!-- send the robot XML to param server -->
+      <param name="robot_description" command="
+        $(find xacro)/xacro '$(arg model)'
+        enable_logging:=$(arg enable_logging)
+        enable_ground_truth:=$(arg enable_ground_truth)
+        enable_mavlink_interface:=$(arg enable_mavlink_interface)
+        log_file:=$(arg log_file)
+        wait_to_record_bag:=$(arg wait_to_record_bag)
+        mav_name:=$(arg mav_name)
+        namespace:=$(arg namespace)"
+      />
+      <param name="tf_prefix" type="string" value="$(arg tf_prefix)" />
+
+      <!-- push robot_description to factory and spawn robot in gazebo -->
+      <node name="spawn_$(arg namespace)" pkg="gazebo_ros" type="spawn_model"
+      args="-param robot_description
+            -urdf
+            -x $(arg x)
+            -y $(arg y)
+            -z $(arg z)
+            -model $(arg namespace)"
+      respawn="false" output="screen">
+      </node>
+    </group>
+
+</launch>

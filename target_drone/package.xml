@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>target_drone</name>
+  <version>0.0.0</version>
+  <description>Motion planning for target drone </description>
+
+  <maintainer email="maubrunn@ethz.ch">mauricebrunner</maintainer>
+  <author email="maubrunn@ethz.ch">mauricebrunner</author>
+
+  <license>ASL 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>catkin_simple</buildtool_depend>
+
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>eigen_conversions</depend>
+  <depend>target_srvs</depend>
+
+</package>

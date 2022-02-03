@@ -1,0 +1,15 @@
+<launch>
+  <arg name="log_output" default="log"/> <!-- change this to screen for more verbosity-->
+  <!-- Optionally pass a nav_msgs/Odometry topic to listen to, in order to set update the target position relative to that, 
+    otherwise it is positioned relative to the origin 0,0,0 -->
+  <arg name="reference_position_topic" default="/zero/mavros/local_position/odom"/>
+
+  <group ns="target_drone">
+    <node name="target_drone" pkg="target_drone" type="target_drone" 
+        output="$(arg log_output)">
+        <remap from="uav_odometry" to="/$(arg reference_position_topic)"/> 
+    </node>
+  </group>
+  
+  <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" />
+</launch>

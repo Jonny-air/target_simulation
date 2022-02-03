@@ -1,0 +1,8 @@
+#request variables
+int64 velocity
+int64 acceleration
+int64 radius
+int64 tilt
+---
+#return variables
+bool success
